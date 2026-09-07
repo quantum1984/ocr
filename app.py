@@ -10,10 +10,10 @@ from PIL import Image
 import io
 
 # --- KONFIGURATION ---
-MISTRAL_API_KEY = "GVVUaRFGvJuGWgT14jFcPBTmxR5DSNj0"
+# API-Keys aus Streamlit Secrets (Cloud) oder Hardcoded (lokal)
+MISTRAL_API_KEY = st.secrets.get("MISTRAL_API_KEY", "GVVUaRFGvJuGWgT14jFcPBTmxR5DSNj0")
 MISTRAL_ENDPOINT = "https://api.mistral.ai"
-
-GOOGLE_API_KEY = "AIzaSyAYEm1nPTnd3zvMcfo_TUytFSo9Lgi7ivA"
+GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY", "AIzaSyAYEm1nPTnd3zvMcfo_TUytFSo9Lgi7ivA")
 
 TESTDATEN_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdaten")
 
