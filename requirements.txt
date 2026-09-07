@@ -1,0 +1,5 @@
+streamlit>=1.50.0
+requests>=2.34.0
+mistralai>=2.9.0
+pillow>=12.0.0
+python-dotenv>=1.2.0

@@ -1,0 +1,26 @@
+### Python ###
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+
+### Credentials ###
+.env
+credentials*.json
+google_creds*.json
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Streamlit ###
+.streamlit/secrets.toml
