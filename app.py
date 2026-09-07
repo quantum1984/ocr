@@ -15,6 +15,9 @@ MISTRAL_API_KEY = st.secrets.get("MISTRAL_API_KEY", "GVVUaRFGvJuGWgT14jFcPBTmxR5
 MISTRAL_ENDPOINT = "https://api.mistral.ai"
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY", "AIzaSyAYEm1nPTnd3zvMcfo_TUytFSo9Lgi7ivA")
 
+# Access-Code: aus Secrets oder Default (lokal)
+ACCESS_CODE = st.secrets.get("ACCESS_CODE", "ocr-spike-2026")
+
 TESTDATEN_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdaten")
 
 SPRACHEN = {
@@ -30,6 +33,37 @@ SPRACHEN = {
 }
 
 st.set_page_config(layout="wide", page_title="OCR Vergleich: Google vs. Mistral")
+
+
+# --- LOGIN GATE ---
+
+def check_access_code(code):
+    """Prüft den eingegebenen Access-Code gegen den konfigurierten Code."""
+    return code.strip() == ACCESS_CODE
+
+
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+if not st.session_state["authenticated"]:
+    st.title("Business Card OCR Spike")
+    st.markdown("---")
+    st.subheader("Zugang erforderlich")
+    st.caption("Bitte den Access-Code eingeben, um die App zu nutzen.")
+
+    with st.form("login_form"):
+        eingabe = st.text_input("Access-Code", type="password", placeholder="Code eingeben...")
+        submitted = st.form_submit_button("Einloggen", type="primary", use_container_width=True)
+        if submitted:
+            if eingabe and check_access_code(eingabe):
+                st.session_state["authenticated"] = True
+                st.rerun()
+            else:
+                st.error("Ungültiger Access-Code.")
+
+    st.stop()
+
+# --- AUTHENTIFIZIERT: HAUPTAPP ---
 
 st.title("Business Card OCR Spike")
 st.subheader("Vergleich: Google Cloud Vision vs. Mistral OCR")
@@ -273,6 +307,12 @@ else:
     if uploaded_file is not None:
         image_bytes = uploaded_file.getvalue()
         bild_name = uploaded_file.name
+
+# Logout-Button am Ende der Sidebar
+st.sidebar.divider()
+if st.sidebar.button("Abmelden", use_container_width=True):
+    st.session_state["authenticated"] = False
+    st.rerun()
 
 
 # --- HAUPTBEREICH ---
